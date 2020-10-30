@@ -2,7 +2,26 @@
 
 A serverless REST API implementation using AWS Lambda with MongoDB Atlas for persistent data. Mongoose is used as a MongoDB ORM for data handling.
 
-Testing is also demonstrated with simple test cases using Mocha/Chai/SuperTest.
+Testing of the API server is also demonstrated with simple test cases using Mocha/Chai/SuperTest. A sample web app created with Vue is also used to show the API consumption.
+
+## Accessible Demos
+<div align="center">
+<img src="https://raw.githubusercontent.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline/main/preview/ui.png" width="600"/>
+</div>
+
+* [Frontend Vue Web App](https://5f9c8e3c319dcc0008cc1cd1--laughing-bassi-3ac3e8.netlify.app/)
+* Currently active Lambda endpoints:
+  ```
+  endpoints:
+    GET - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/
+    POST - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet
+    GET - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet/{id}
+    GET - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet
+    PUT - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet/{id}
+    DELETE - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet/{id}
+    DELETE - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet/purge
+  ```
+To see the code actually used to deploy these, check the `deployment` branch of this repository. (Currently monitored via GitHub webhooks to Netlify and AWS CodePipeline respectively.)
 
 ## Prerequisites
 * Access to [AWS Lambda](https://aws.amazon.com/lambda/)
@@ -14,7 +33,7 @@ Testing is also demonstrated with simple test cases using Mocha/Chai/SuperTest.
   ```
 
 ## Setup
-1. Clone the repository and install all dependencies
+Clone the repository and install all dependencies
    ```sh
    git https://github.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline.git
    cd AWS-Serverless-API-MongoDB-Pipeline/ui && yarn install && cd ../server && yarn install
@@ -60,10 +79,7 @@ Testing is also demonstrated with simple test cases using Mocha/Chai/SuperTest.
    **Running tests will purge the test database that `serverless offline` uses. Please ensure no critical data is stored on the test database that `serverless offline`-run local endpoints interact with.**
 
 ### UI
-
-![UiPreview](https://raw.githubusercontent.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline/main/preview/ui.png)
-
-The Vue webapp UI is only used locally for API consumption purposes. If you wish to deploy the UI app, please refer to this [document](https://cli.vuejs.org/guide/deployment.html#github-pages).
+The Vue webapp UI is only used to demonstrate the API consumption.
 1. To deploy the UI app locally, simply run:
    ```
    yarn serve
@@ -112,6 +128,8 @@ The default unique ObjectID `_id` is used in identifying individual data entries
 
 ## AWS Full Pipeline Deployment
 For a rundown on how to deploy the full CI/CD pipeline of the application on AWS, please refer to the [Deployment Guide](https://github.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline/blob/main/DeployGuide.md).
+
+It is highly recommended to refer to the code in the `deployment` branch.
 
 ## Deploying API functions directly to AWS Lambda from local
 If you are not interested in deploying CI/CD, you can alternatively just use Serverless's deploy which handles the resource orchestration on AWS and simply returns the endpoints ready-to-go.
