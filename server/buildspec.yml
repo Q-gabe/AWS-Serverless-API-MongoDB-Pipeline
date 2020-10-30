@@ -1,5 +1,10 @@
 version: 0.2
 
+env:
+  parameter-store:
+    DATABASE: "pet-dashboard-database-connection-uri"
+    DATABASE_TEST: "pet-dashboard-test-database-connection-uri"
+
 phases:
   pre_build:
     commands:
