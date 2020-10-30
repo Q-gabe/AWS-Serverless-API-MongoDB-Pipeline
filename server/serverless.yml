@@ -7,8 +7,9 @@ provider:
   runtime: nodejs12.x
 
 # you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+  environment:
+    DATABASE: ${env:DATABASE}
+    DATABASE_TEST: ${env:DATABASE_TEST}
 
 functions:
   healthcheck:
