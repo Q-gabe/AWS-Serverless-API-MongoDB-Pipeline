@@ -17,7 +17,7 @@ Testing is also demonstrated with simple test cases using Mocha/Chai/SuperTest.
 1. Clone the repository and install all dependencies
    ```sh
    git https://github.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline.git
-   cd AWS-Serverless-API-MongoDB-Pipeline/ui && yarn install && cd server && yarn install
+   cd AWS-Serverless-API-MongoDB-Pipeline/ui && yarn install && cd ../server && yarn install
    ```
 ### Setting up the API Server
 #### AWS Serverless
