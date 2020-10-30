@@ -142,6 +142,7 @@ This demo uses an example of a Pet Day Boarding Center as a client, wishing to t
 |species   	|String   	    |
 |age       	|Number   	    |
 |status   	|String        	|
+
 The default unique ObjectID `_id` is used in identifying individual data entries.
 
 ## Acknowledgements
