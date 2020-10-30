@@ -50,26 +50,16 @@ The `buildspec.yml` we use for the build step later references the names of thes
 
 ### Assigning Proper permissions to the Pipeline service account
 19. Navigate to CodeBuild > Build Projects > Build Project > Build Details > Environment. Click on the service role being used by CodeBuild.
-20. Click "Add inline policy". For service, search and click on "S3".
-21. Grant the following Actions:
-    * Read > GetObject
-    * Write > PutObject and DeleteObject 
-22. For simplicity, just choose "All resources" for Resources. You can alternatively specify the build artifacts bucket's ARN (e.g. `arn:aws:s3:::BUCKET_NAME/PIPELINE NAME/**/*`).
-23. Click "Add additional permissions".
-24. Search for the service "Systems Manager" this time.
-25. Grant the following Actions:
-    * Read > GetParameters
-26. Specify "All resources" for Resources for simplicity again.
-27. Click "Review Policy", give it an appropriate policy name and hit "Create Policy".
-28. Attach the created policy to the service account under IAM > Roles.
-29. Lastly, we need full access to AWS Cloud Formation which Serverless uses to orchestrate the deployment of the Lambda functions. Select "Attach policies" and search for "AdministratorAccess".
-30. Tick the box of "AWSCloudFormationFullAccess" and click "Attach Policy".
+20. Select "Attach policies" and search for "AdministratorAccess".
+21. Tick the box of "AdministratorAccess" and click "Attach Policy".
+
+    (It is not recommended to do this for a real production as this violates the principle of least privilege. However, Serverless deploy requires the orchestration of many AWS microservices and as such, requires a host of permissions. For now, we can simply allow the service account to have full access.)
 
 ### Running the pipeline
-31. Navigate to CodePipeline and click on your created pipeline.
-32. Click on Release change to activate the pipeline flow. The entire pipeline should take a couple of minutes.
-33. You should see that all 3 stages in the pipeline has succeeded. Click "Details" for the last AWS CodeBuild stage.
-34. Scroll down the logs until you see something similar to this:
+22. Navigate to CodePipeline and click on your created pipeline.
+23. Click on Release change to activate the pipeline flow. The entire pipeline should take a couple of minutes.
+24. You should see that all 3 stages in the pipeline has succeeded. Click "Details" for the last AWS CodeBuild stage.
+25. Scroll down the logs until you see something similar to this:
     ```sh
     ...
     endpoints:
