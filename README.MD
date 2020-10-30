@@ -143,3 +143,14 @@ To deploy the API functions to AWS Lambda directly, simply run this command in t
 ## Acknowledgements
 * Logo used in the sample UI app was generated from [FreeLogoDesign](https://www.freelogodesign.org/).
 * The Vue App was bootstrapped with [Vue CLI](https://cli.vuejs.org/).
+* [UIkit](https://getuikit.com/) was used as a responsive design framework for the web app.
+* [Serverless Offline](https://github.com/dherault/serverless-offline) was used to facilitate a simpler API for local testing of Lambda functions compared to alternatives.
+* References:
+  * AWS Deployment
+    * [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+    * [AWS Documentation](https://docs.aws.amazon.com/index.html)
+    * [Setting up CI/CD on AWS with Lambda and Serverless (Outdated but great reference)](https://medium.com/quantica/setup-ci-cd-pipeline-with-aws-lambda-and-serverless-framework-f624773f355e)
+    * [Using SSM Variables in CodeBuild](http://www.piotrnowicki.com/2019/06/serverless-aws-using-ssm-variables-from-codebuild/)
+  * Testing:
+    * [Chai Testing Guide](https://www.chaijs.com/guide/)
+    * [Testing in Node.js using Mocha and Chai](https://livecodestream.dev/post/2020-08-17-testing-in-nodejs-using-mocha-and-chai-part-1/)
