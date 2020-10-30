@@ -1,0 +1,12 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - cd server && yarn install --silent
+      - yarn global add serverless
+  build:
+    commands:
+      - ./startOffline.sh
+      - yarn test
+      - ./stopOffline.sh
