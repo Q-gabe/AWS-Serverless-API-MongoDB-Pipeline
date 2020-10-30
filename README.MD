@@ -60,6 +60,8 @@ Testing is also demonstrated with simple test cases using Mocha/Chai/SuperTest.
    **Running tests will purge the test database that `serverless offline` uses. Please ensure no critical data is stored on the test database that `serverless offline`-run local endpoints interact with.**
 
 ### UI
+![UiPreview](https://raw.githubusercontent.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline/main/preview/ui.png)
+
 The Vue webapp UI is only used locally for API consumption purposes. If you wish to deploy the UI app, please refer to this [document](https://cli.vuejs.org/guide/deployment.html#github-pages).
 1. To deploy the UI app locally, simply run:
    ```
