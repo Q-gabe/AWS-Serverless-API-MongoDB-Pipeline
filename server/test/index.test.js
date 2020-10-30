@@ -55,7 +55,7 @@ describe("handler healthcheck()", () => {
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                assert.equal(res.body, 'Hello from API server');
+                assert.equal(res.text, 'Hello from API server');
                 return done();
             });
     }).timeout(20000);
