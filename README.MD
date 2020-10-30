@@ -60,6 +60,7 @@ Testing is also demonstrated with simple test cases using Mocha/Chai/SuperTest.
    **Running tests will purge the test database that `serverless offline` uses. Please ensure no critical data is stored on the test database that `serverless offline`-run local endpoints interact with.**
 
 ### UI
+
 ![UiPreview](https://raw.githubusercontent.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline/main/preview/ui.png)
 
 The Vue webapp UI is only used locally for API consumption purposes. If you wish to deploy the UI app, please refer to this [document](https://cli.vuejs.org/guide/deployment.html#github-pages).
@@ -88,44 +89,6 @@ yarn test
 
 Note that besides error handling unit tests, the actual API behavior testing are written as integration tests rather than mocking the persistent MongoDB.
 
-## Deployment
-For the deployment of the application, the following pipeline can be used since the server is AWS-centric:
-
-```
-Code  --Push-->  GitHub  --Webhook-->  AWS CodePipeline  -Build Stage->  AWS Cloudbuild  -Deploy Stage->  AWS Lambda 
-```
-
-### Setting up CI
-1. Create an S3 bucket to store the build artifacts.
-2. Create a CodePipeline, you can name it whatevery you wish.
-   
-#### Pipeline Settings
-3. Select a new service role for the pipeline for permissions to interact with other AWS services.
-4. Select the S3 bucket you created as the artifact store.
-   
-#### Source Stage
-5. Select GitHub as your source provider. (Alternatively, point the source to wherever you have deployed your source code)
-6. Fill in the details for your repository and use the recommended detection mode. (For GitHub, that is through webhooks)
-
-#### Build Stage
-7. As per the deployment diagram, AWS CodeBuild is specified as the build provider, spinning up a docker container to run the `mocha` tests everytime code changes are fetched from the repository.
-8. Create a CodeBuild project choosing the following settings:
-   * Ubuntu, Node.js Runtime, aws/codebuild/nodejs:12, "Always use the latest image for this runtime version"
-   * Create a new service role for CodeBuild to interact with the other AWS services.
-   > :bangbang: **Important**: As the `DATABASE` and the `DATABASE_TEST` attributes in your env contain your MongoDB Atlas credentials, they should be treated as secrets. Thus, if you are deploying it, **please remove the two fields from your .env** and ensure it was not compromised by committing it previously.
-   * Add the key-value of the `DATABASE` and `DATABASE_TEST` environment variables to the CodeBuild environment under "Additional Configuration".
-   * Choose to use a buildspec file with the path as `server/buildspec.yml`
-
-#### Setting up CD
-WIP
-
-## Deploying API functions to AWS Lambda from local
-1. To deploy the API functions to AWS Lambda directly, simply run this command in the server folder:
-   ```
-   serverless
-   ```
-   The output will show a list of URLs where your functions can be accessed.
-
 ## API Routes
 |Route Name |URL   	        |HTTP Verb   	|Description   	                        |Expected inputs                                |
 |---	    |---	        |---	        |---	                                |---                                            |
@@ -146,6 +109,18 @@ This demo uses an example of a Pet Day Boarding Center as a client, wishing to t
 |status   	|String        	|
 
 The default unique ObjectID `_id` is used in identifying individual data entries.
+
+## AWS Full Pipeline Deployment
+For a rundown on how to deploy the full CI/CD pipeline of the application on AWS, please refer to the [Deployment Guide](https://github.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline/blob/main/DeployGuide.md).
+
+## Deploying API functions directly to AWS Lambda from local
+If you are not interested in deploying CI/CD, you can alternatively just use Serverless's deploy which handles the resource orchestration on AWS and simply returns the endpoints ready-to-go.
+
+To deploy the API functions to AWS Lambda directly, simply run this command in the server folder:
+   ```
+   serverless deploy
+   ```
+   The output will show a list of URLs where your functions can be accessed.
 
 ## Acknowledgements
 * Logo used in the sample UI app was generated from [FreeLogoDesign](https://www.freelogodesign.org/).
