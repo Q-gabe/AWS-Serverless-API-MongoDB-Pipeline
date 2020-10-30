@@ -6,7 +6,11 @@ const Pet = require('./database/models/pet.model');
 
 module.exports.healthcheck = (event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false; // Send res immediately
-    callback(null, "Hello from API server");
+    callback(null, {
+        statusCode: 200,
+        headers: { 'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*' },
+        body: "Hello from API server"
+    });
     return;
 };
 
@@ -61,6 +65,7 @@ module.exports.create = (event, context, callback) => {
             .then(pet => {
                 callback(null, {
                     statusCode: 200,
+                    headers: { 'Access-Control-Allow-Origin': '*' },
                     body: JSON.stringify({ pet_id: pet._id }),
                 })
                 return;
@@ -92,6 +97,7 @@ module.exports.getOne = (event, context, callback) => {
             } else {
                 callback(null, {
                     statusCode: 200,
+                    headers: { 'Access-Control-Allow-Origin': '*' },
                     body: JSON.stringify(pet)
                 });
                 return;
@@ -115,6 +121,7 @@ module.exports.getAll = (event, context, callback) => {
         .then(pets => {
                 callback(null, {
                     statusCode: 200,
+                    headers: { 'Access-Control-Allow-Origin': '*' },
                     body: JSON.stringify(pets)
                 });
                 return;
@@ -197,7 +204,7 @@ module.exports.update = (event, context, callback) => {
                 } else {
                     callback(null, {
                         statusCode: 200,
-                        headers: { 'Content-Type': 'text/plain' },
+                        headers: { 'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*' },
                         body: `Successfully updated pet with id ${event.pathParameters.id}.\n`
                     });
                     return;
@@ -230,7 +237,7 @@ module.exports.delete = (event, context, callback) => {
             } else {
                 callback(null, {
                     statusCode: 200,
-                    headers: { 'Content-Type': 'text/plain' },
+                    headers: { 'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*' },
                     body: `Successfully deleted the pet with id ${event.pathParameters.id}.\n`
                 });
                 return;
@@ -248,7 +255,6 @@ module.exports.delete = (event, context, callback) => {
 };
 
 // Not documented or tested - used to purge database for testing purposes.
-// ! If you are deploying this, please remove this function.
 module.exports.deleteAll = (event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false; // Send res immediately
     connectToDatabase().then(() => {

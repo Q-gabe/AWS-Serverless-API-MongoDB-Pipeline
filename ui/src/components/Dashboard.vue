@@ -366,7 +366,7 @@ export default {
       let target =
         process.env.VUE_APP_NODE_ENV == "development"
           ? `${process.env.VUE_APP_DEV_ADDRESS}:${process.env.VUE_APP_DEV_PORT}/dev`
-          : `${process.env.VUE_APP_PROD_ADDRESS}:${process.env.VUE_APP_PROD_PORT}/prod`;
+          : `${process.env.VUE_APP_PROD_ADDRESS}/prod`;
       this.target = target;
     },
     // API Calls to API server

@@ -1,5 +1,10 @@
 version: 0.2
 
+env:
+  parameter-store:
+    DATABASE: "pet-dashboard-database-connection-uri"
+    DATABASE_TEST: "pet-dashboard-test-database-connection-uri"
+
 phases:
   pre_build:
     commands:
@@ -10,3 +15,11 @@ phases:
       - ./startOffline.sh
       - yarn test
       - ./stopOffline.sh
+      - mkdir -p target/prod
+      - serverless package --package target/prod --stage prod -v
+
+artifacts:
+  files:
+    - server/target/**/*
+    - server/serverless.yml
+    - server/deploy.sh

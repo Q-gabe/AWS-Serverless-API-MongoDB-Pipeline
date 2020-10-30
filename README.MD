@@ -2,7 +2,26 @@
 
 A serverless REST API implementation using AWS Lambda with MongoDB Atlas for persistent data. Mongoose is used as a MongoDB ORM for data handling.
 
-Testing is also demonstrated with simple test cases using Mocha/Chai/SuperTest.
+Testing of the API server is also demonstrated with simple test cases using Mocha/Chai/SuperTest. A sample web app created with Vue is also used to show the API consumption.
+
+## Accessible Demos
+<div align="center">
+<img src="https://raw.githubusercontent.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline/main/preview/ui.png" width="600"/>
+</div>
+
+* [Frontend Vue Web App](https://5f9c8e3c319dcc0008cc1cd1--laughing-bassi-3ac3e8.netlify.app/)
+* Currently active Lambda endpoints:
+  ```
+  endpoints:
+    GET - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/
+    POST - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet
+    GET - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet/{id}
+    GET - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet
+    PUT - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet/{id}
+    DELETE - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet/{id}
+    DELETE - https://g9sxbc8azf.execute-api.us-east-1.amazonaws.com/prod/pet/purge
+  ```
+To see the code actually used to deploy these, check the `deployment` branch of this repository. (Currently monitored via GitHub webhooks to Netlify and AWS CodePipeline respectively.)
 
 ## Prerequisites
 * Access to [AWS Lambda](https://aws.amazon.com/lambda/)
@@ -14,7 +33,7 @@ Testing is also demonstrated with simple test cases using Mocha/Chai/SuperTest.
   ```
 
 ## Setup
-1. Clone the repository and install all dependencies
+Clone the repository and install all dependencies
    ```sh
    git https://github.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline.git
    cd AWS-Serverless-API-MongoDB-Pipeline/ui && yarn install && cd ../server && yarn install
@@ -60,9 +79,7 @@ Testing is also demonstrated with simple test cases using Mocha/Chai/SuperTest.
    **Running tests will purge the test database that `serverless offline` uses. Please ensure no critical data is stored on the test database that `serverless offline`-run local endpoints interact with.**
 
 ### UI
-![UiPreview](https://raw.githubusercontent.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline/main/preview/ui.png)
-
-The Vue webapp UI is only used locally for API consumption purposes. If you wish to deploy the UI app, please refer to this [document](https://cli.vuejs.org/guide/deployment.html#github-pages).
+The Vue webapp UI is only used to demonstrate the API consumption.
 1. To deploy the UI app locally, simply run:
    ```
    yarn serve
@@ -88,44 +105,6 @@ yarn test
 
 Note that besides error handling unit tests, the actual API behavior testing are written as integration tests rather than mocking the persistent MongoDB.
 
-## Deployment
-For the deployment of the application, the following pipeline can be used since the server is AWS-centric:
-
-```
-Code  --Push-->  GitHub  --Webhook-->  AWS CodePipeline  -Build Stage->  AWS Cloudbuild  -Deploy Stage->  AWS Lambda 
-```
-
-### Setting up CI
-1. Create an S3 bucket to store the build artifacts.
-2. Create a CodePipeline, you can name it whatevery you wish.
-   
-#### Pipeline Settings
-3. Select a new service role for the pipeline for permissions to interact with other AWS services.
-4. Select the S3 bucket you created as the artifact store.
-   
-#### Source Stage
-5. Select GitHub as your source provider. (Alternatively, point the source to wherever you have deployed your source code)
-6. Fill in the details for your repository and use the recommended detection mode. (For GitHub, that is through webhooks)
-
-#### Build Stage
-7. As per the deployment diagram, AWS CodeBuild is specified as the build provider, spinning up a docker container to run the `mocha` tests everytime code changes are fetched from the repository.
-8. Create a CodeBuild project choosing the following settings:
-   * Ubuntu, Node.js Runtime, aws/codebuild/nodejs:12, "Always use the latest image for this runtime version"
-   * Create a new service role for CodeBuild to interact with the other AWS services.
-   > :bangbang: **Important**: As the `DATABASE` and the `DATABASE_TEST` attributes in your env contain your MongoDB Atlas credentials, they should be treated as secrets. Thus, if you are deploying it, **please remove the two fields from your .env** and ensure it was not compromised by committing it previously.
-   * Add the key-value of the `DATABASE` and `DATABASE_TEST` environment variables to the CodeBuild environment under "Additional Configuration".
-   * Choose to use a buildspec file with the path as `server/buildspec.yml`
-
-#### Setting up CD
-WIP
-
-## Deploying API functions to AWS Lambda from local
-1. To deploy the API functions to AWS Lambda directly, simply run this command in the server folder:
-   ```
-   serverless
-   ```
-   The output will show a list of URLs where your functions can be accessed.
-
 ## API Routes
 |Route Name |URL   	        |HTTP Verb   	|Description   	                        |Expected inputs                                |
 |---	    |---	        |---	        |---	                                |---                                            |
@@ -147,6 +126,31 @@ This demo uses an example of a Pet Day Boarding Center as a client, wishing to t
 
 The default unique ObjectID `_id` is used in identifying individual data entries.
 
+## AWS Full Pipeline Deployment
+For a rundown on how to deploy the full CI/CD pipeline of the application on AWS, please refer to the [Deployment Guide](https://github.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline/blob/main/DeployGuide.md).
+
+It is highly recommended to refer to the code in the `deployment` branch.
+
+## Deploying API functions directly to AWS Lambda from local
+If you are not interested in deploying CI/CD, you can alternatively just use Serverless's deploy which handles the resource orchestration on AWS and simply returns the endpoints ready-to-go.
+
+To deploy the API functions to AWS Lambda directly, simply run this command in the server folder:
+   ```
+   serverless deploy
+   ```
+   The output will show a list of URLs where your functions can be accessed.
+
 ## Acknowledgements
 * Logo used in the sample UI app was generated from [FreeLogoDesign](https://www.freelogodesign.org/).
 * The Vue App was bootstrapped with [Vue CLI](https://cli.vuejs.org/).
+* [UIkit](https://getuikit.com/) was used as a responsive design framework for the web app.
+* [Serverless Offline](https://github.com/dherault/serverless-offline) was used to facilitate a simpler API for local testing of Lambda functions compared to alternatives.
+* References:
+  * AWS Deployment
+    * [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+    * [AWS Documentation](https://docs.aws.amazon.com/index.html)
+    * [Setting up CI/CD on AWS with Lambda and Serverless (Outdated but great reference)](https://medium.com/quantica/setup-ci-cd-pipeline-with-aws-lambda-and-serverless-framework-f624773f355e)
+    * [Using SSM Variables in CodeBuild](http://www.piotrnowicki.com/2019/06/serverless-aws-using-ssm-variables-from-codebuild/)
+  * Testing:
+    * [Chai Testing Guide](https://www.chaijs.com/guide/)
+    * [Testing in Node.js using Mocha and Chai](https://livecodestream.dev/post/2020-08-17-testing-in-nodejs-using-mocha-and-chai-part-1/)
