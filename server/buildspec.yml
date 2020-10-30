@@ -15,7 +15,7 @@ phases:
       - ./startOffline.sh
       - yarn test
       - ./stopOffline.sh
-      - mkdir target/prod
+      - mkdir -p target/prod
       - serverless package --package target/prod --stage prod -v
 
 artifacts:
