@@ -6,7 +6,11 @@ const Pet = require('./database/models/pet.model');
 
 module.exports.healthcheck = (event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false; // Send res immediately
-    callback(null, "Hello from API server");
+    callback(null, {
+        statusCode: 200,
+        headers: { 'Content-Type': 'text/plain' },
+        body: "Hello from API server"
+    });
     return;
 };
 
