@@ -4,12 +4,15 @@ A serverless REST API implementation using AWS Lambda with MongoDB Atlas for per
 
 Testing of the API server is also demonstrated with simple test cases using Mocha/Chai/SuperTest. A sample web app created with Vue is also used to show the API consumption.
 
-## Accessible Demos
+## Demo
 <div align="center">
 <img src="https://raw.githubusercontent.com/Q-gabe/AWS-Serverless-API-MongoDB-Pipeline/main/preview/ui.png" width="600"/>
+<br><b>The deployed demo has been decommissioned due to storage costs.</b>
 </div>
 
-* [Frontend Vue Web App](https://5f9c8e3c319dcc0008cc1cd1--laughing-bassi-3ac3e8.netlify.app/)
+
+
+* Frontend Vue Web App
 * Currently active Lambda endpoints:
   ```
   endpoints:
